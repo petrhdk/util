@@ -24,7 +24,8 @@
     }
   },
   "scripts": {
-    "build": "shx rm -rf dist/*  &&  rollup --config=rollup.config.ts --configPlugin=rollup-plugin-typescript  &&  vue-tsc --declaration --emitDeclarationOnly"
+    "build": "shx rm -rf dist/*  &&  rollup --config rollup.config.ts --configPlugin rollup-plugin-typescript  &&  vue-tsc --declaration --emitDeclarationOnly",
+    "build:watch": "shx rm -rf dist/*  &&  rollup --config rollup.config.ts --configPlugin rollup-plugin-typescript --watch --watch.onEnd \"vue-tsc --declaration --emitDeclarationOnly\""
   },
   "peerDependencies": {
     "vue": "^3.4.21"
