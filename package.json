@@ -1,42 +1,30 @@
 {
   "name": "@petrhdk/util",
   "version": "1.0.0",
-  "exports": {
-    "./core": {
-      "import": "./dist/core/index.mjs",
-      "require": "./dist/core/index.cjs",
-      "types": "./dist/core/index.d.ts"
-    },
-    "./dom": {
-      "import": "./dist/dom/index.mjs",
-      "require": "./dist/dom/index.cjs",
-      "types": "./dist/dom/index.d.ts"
-    },
-    "./vue": {
-      "import": "./dist/vue/index.mjs",
-      "require": "./dist/vue/index.cjs",
-      "types": "./dist/vue/index.d.ts"
-    }
-  },
-  "scripts": {
-    "build": "shx rm -rf dist/*  &&  rollup --config=rollup.config.ts --configPlugin=rollup-plugin-typescript  &&  vue-tsc --declaration --emitDeclarationOnly"
-  },
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/petrhdk/util.git"
   },
-  "license": "MIT",
-  "devDependencies": {
-    "@types/node": "^20.11.25",
-    "eslint": "^8.57.0",
-    "eslint-config-prettier": "^9.1.0",
-    "prettier": "^3.2.5",
-    "rollup": "^4.12.1",
-    "rollup-plugin-typescript": "^1.0.1",
-    "shx": "^0.3.4",
-    "typescript": "^5.4.2",
-    "vue": "^3.4.21",
-    "vue-tsc": "^2.0.6"
+  "exports": {
+    "./core": {
+      "types": "./dist/core/index.d.ts",
+      "import": "./dist/core/index.mjs",
+      "require": "./dist/core/index.cjs"
+    },
+    "./dom": {
+      "types": "./dist/dom/index.d.ts",
+      "import": "./dist/dom/index.mjs",
+      "require": "./dist/dom/index.cjs"
+    },
+    "./vue": {
+      "types": "./dist/vue/index.d.ts",
+      "import": "./dist/vue/index.mjs",
+      "require": "./dist/vue/index.cjs"
+    }
+  },
+  "scripts": {
+    "build": "shx rm -rf dist/*  &&  rollup --config=rollup.config.ts --configPlugin=rollup-plugin-typescript  &&  vue-tsc --declaration --emitDeclarationOnly"
   },
   "peerDependencies": {
     "vue": "^3.4.21"
@@ -45,5 +33,19 @@
     "vue": {
       "optional": true
     }
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^0.41.0",
+    "@types/node": "^20.11.25",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-github": "^4.10.0",
+    "prettier": "^3.2.5",
+    "rollup": "^4.12.1",
+    "rollup-plugin-typescript": "^1.0.1",
+    "shx": "^0.3.4",
+    "typescript": "^5.4.2",
+    "vue": "^3.4.21",
+    "vue-tsc": "^2.0.6"
   }
 }

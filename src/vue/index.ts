@@ -1,6 +1,6 @@
-import { getCurrentInstance, onBeforeUnmount, onMounted, ref } from "vue";
-import { installResizeObserver } from "../dom";
-import { isDefined } from "../core";
+import { getCurrentInstance, onBeforeUnmount, onMounted, ref } from 'vue';
+import { installResizeObserver } from '../dom';
+import { isDefined } from '../core';
 
 /** hook that gives a reactive reference to the component's own css pixel width */
 export function useComponentSize() {

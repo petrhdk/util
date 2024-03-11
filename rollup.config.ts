@@ -1,16 +1,9 @@
-import type { RollupOptions } from "rollup";
-import typescript from "rollup-plugin-typescript";
-import dts from "rollup-plugin-dts";
+import type { RollupOptions } from 'rollup';
+import typescript from 'rollup-plugin-typescript';
 
-const entries = [
-  'core/index',
-  'dom/index',
-  'vue/index',
-];
+const entries = ['core/index', 'dom/index', 'vue/index'];
 
-const external = [
-  'vue',
-];
+const external = ['vue'];
 
 const configs: RollupOptions[] = [];
 
@@ -20,17 +13,16 @@ for (const entry of entries) {
     output: [
       {
         file: `dist/${entry}.mjs`,
-        format: "es",
+        format: 'es',
       },
       {
         file: `dist/${entry}.cjs`,
-        format: "cjs",
+        format: 'cjs',
       },
     ],
     plugins: [typescript()],
     external,
   });
 }
-
 
 export default configs;
