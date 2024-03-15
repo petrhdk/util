@@ -36,7 +36,7 @@ devDependencies:
     specifier: ^5.4.2
     version: 5.4.2
   vue:
-    specifier: ^3.4.21
+    specifier: ^3.0.0-0
     version: 3.4.21(typescript@5.4.2)
   vue-tsc:
     specifier: ^2.0.6

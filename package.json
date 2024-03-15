@@ -34,7 +34,7 @@
     "publish:final": "pnpm publish --access public"
   },
   "peerDependencies": {
-    "vue": "^3.4.21"
+    "vue": "^3.0.0-0"
   },
   "peerDependenciesMeta": {
     "vue": {
@@ -52,7 +52,7 @@
     "rollup-plugin-typescript": "^1.0.1",
     "shx": "^0.3.4",
     "typescript": "^5.4.2",
-    "vue": "^3.4.21",
+    "vue": "^3.0.0-0",
     "vue-tsc": "^2.0.6"
   }
 }
