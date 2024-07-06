@@ -13,6 +13,8 @@ export function formatFixedDecimals(number: number, numberOfDecimals: number) {
   const wholeNumber = Math.round(number);
   const decimals = Math.abs(
     Math.round((number - wholeNumber) * 10 ** numberOfDecimals),
-  );
+  )
+    .toString()
+    .padEnd(numberOfDecimals, '0');
   return `${wholeNumber}.${decimals}`;
 }
