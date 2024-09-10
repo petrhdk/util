@@ -67,37 +67,62 @@ export function assertInstanceof(x: unknown, classes: Constructor | Constructor[
   return x;
 }
 
-export function delegateFocus(el?: Element, { upFrom, downFrom }: { upFrom?: Element, downFrom?: Element } = {}) {
-  if (isNotDefined(el)) {
-    return;
-  }
-
-  let elementsToTry = [el, ...el.querySelectorAll('*')];
-
-  if (isDefined(upFrom)) {
-    elementsToTry.reverse();
-    downFrom = upFrom;
-  }
-
-  if (isDefined(downFrom)) {
-    let hasEncountered = false;
-    elementsToTry = elementsToTry.filter((el) => {
-      if (el === downFrom) {
-        hasEncountered = true;
-        return false;
-      }
-      return hasEncountered;
-    });
-  }
-
-  for (const el of elementsToTry) {
+/**
+ * tries to focus the given elements until it finds the first that works
+ */
+export function tryToFocus(elements: Element[]) {
+  for (const el of elements) {
     // try to focus
     (el as HTMLElement).focus?.();
 
-    // check if focus succeeded
-    const rootNode = assertInstanceof(el.getRootNode(), [Document, ShadowRoot]);
-    if (el === rootNode.activeElement) {
+    // if focus was successful, we're done
+    const documentRoot = assertInstanceof(el.getRootNode(), [Document, ShadowRoot]);
+    if (el === documentRoot.activeElement) {
       break;
+    }
+  }
+}
+
+/**
+ * delegates focus to the next focusable child element inside a given container,
+ * useful for keyboard navigation
+ */
+export function focusMenuItem(containerEl: Element, target: 'first' | 'previous' | 'next') {
+  const menuItems = [...containerEl.children];
+
+  if (target === 'first') {
+    tryToFocus(menuItems);
+  }
+
+  if (target === 'previous' || target === 'next') {
+    const documentRoot = assertInstanceof(containerEl.getRootNode(), [Document, ShadowRoot]);
+    const activeElement = documentRoot.activeElement;
+
+    // currently active element must at least be inside the container
+    if (isNotDefined(activeElement) || !containerEl.contains(activeElement) || containerEl === activeElement) {
+      throw new Error(`Can not navigate to ${target} menu item because no menu item currently has focus`);
+    }
+
+    // if currently active element is not immediate child yet, traverse upwards until we hit a child, and then re-focus that child, if possible
+    if (activeElement.parentElement !== containerEl) {
+      let el = activeElement;
+      while (el.parentElement !== containerEl) {
+        el = el.parentElement!;
+      }
+      tryToFocus([el]);
+    }
+    // otherwise we can just focus the previous/next menu item(s), if possible
+    else {
+      if (target === 'previous') {
+        tryToFocus(
+          menuItems.slice(0, menuItems.indexOf(activeElement)).toReversed(),
+        );
+      }
+      if (target === 'next') {
+        tryToFocus(
+          menuItems.slice(menuItems.indexOf(activeElement) + 1),
+        );
+      }
     }
   }
 }
