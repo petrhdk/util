@@ -66,3 +66,38 @@ export function assertInstanceof(x: unknown, classes: Constructor | Constructor[
   }
   return x;
 }
+
+export function delegateFocus(el?: Element, { upFrom, downFrom }: { upFrom?: Element, downFrom?: Element } = {}) {
+  if (isNotDefined(el)) {
+    return;
+  }
+
+  let elementsToTry = [el, ...el.querySelectorAll('*')];
+
+  if (isDefined(upFrom)) {
+    elementsToTry.reverse();
+    downFrom = upFrom;
+  }
+
+  if (isDefined(downFrom)) {
+    let hasEncountered = false;
+    elementsToTry = elementsToTry.filter((el) => {
+      if (el === downFrom) {
+        hasEncountered = true;
+        return false;
+      }
+      return hasEncountered;
+    });
+  }
+
+  for (const el of elementsToTry) {
+    // try to focus
+    (el as HTMLElement).focus?.();
+
+    // check if focus succeeded
+    const rootNode = assertInstanceof(el.getRootNode(), [Document, ShadowRoot]);
+    if (el === rootNode.activeElement) {
+      break;
+    }
+  }
+}

@@ -10,7 +10,7 @@
     "module": "ESNext", // output module syntax (before bundling)
 
     /* behavior */
-    "lib": ["ESNext", "DOM"], // which type definitions of advanced language features to load
+    "lib": ["ESNext", "DOM", "DOM.Iterable"], // which type definitions of advanced language features to load
     "moduleResolution": "Bundler", // how import statements/urls are resolved
     "esModuleInterop": true, // "recommended" in docs // fix for es import of commonjs modules
     "skipLibCheck": true, // "recommended" in docs // skip type checking of declaration files (.d.ts)
