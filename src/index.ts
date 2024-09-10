@@ -52,3 +52,12 @@ export function formatFixedDecimals(number: number, numberOfDecimals: number) {
  *  ```
  */
 export function assertThatIsNeverCalled(_: never) {}
+
+export type Constructor<T = unknown, A = unknown> = new (...args: A[]) => T;
+
+export function assertInstanceof<T>(x: unknown, clas: Constructor<T>) {
+  if (!(x instanceof clas)) {
+    throw new TypeError(`Value is not of instance '${clas.name}'`);
+  }
+  return x;
+}
