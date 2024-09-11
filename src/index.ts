@@ -47,11 +47,11 @@ export function formatFixedDecimals(number: number, numberOfDecimals: number) {
  *  switch(value) {
  *    case 1: break;
  *    case 2: break;
- *    default: assertThatIsNeverCalled(value);
+ *    default: assertThatIsNeverReached(value);
  *  }
  *  ```
  */
-export function assertThatIsNeverCalled(_: never) {}
+export function assertThatIsNeverReached(_: never) {}
 
 export type Constructor<T = unknown> = new (...args: unknown[]) => T;
 
