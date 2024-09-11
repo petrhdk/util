@@ -97,47 +97,37 @@ export function tryToFocus(elements: Element[]) {
 }
 
 /**
- * delegates focus to the next focusable child element inside a given container,
- * useful for keyboard navigation
+ * delegates focus to the desired menu item (useful for keyboard navigation)
  */
-export function focusMenuItem(containerEl: Element, target: 'first' | 'previous' | 'next') {
-  const menuItems = [...containerEl.children];
+export function focusMenuItem(menuItems: Element[], target: 'first' | 'previous' | 'next') {
+  if (menuItems.length === 0) {
+    return;
+  }
+
+  const focusedEl = getFocusedElement(menuItems[0]);
+
+  if (target === 'previous' || target === 'next') {
+    if (isNotDefined(focusedEl) || !menuItems.includes(focusedEl)) {
+      target = 'first';
+    }
+  }
 
   if (target === 'first') {
     tryToFocus(menuItems);
+    return;
   }
 
-  if (target === 'previous' || target === 'next') {
-    const documentRoot = assertInstanceof(containerEl.getRootNode(), [Document, ShadowRoot]);
-    const activeElement = documentRoot.activeElement;
-
-    // currently active element must at least be inside the container
-    if (isNotDefined(activeElement) || !containerEl.contains(activeElement) || containerEl === activeElement) {
-      throw new Error(`Can not navigate to ${target} menu item because no menu item currently has focus`);
-    }
-
-    // if currently active element is not immediate child yet, traverse upwards until we hit a child, and then re-focus that child, if possible
-    if (activeElement.parentElement !== containerEl) {
-      let el = activeElement;
-      while (el.parentElement !== containerEl) {
-        el = el.parentElement!;
-      }
-      tryToFocus([el]);
-    }
-    // otherwise we can just focus the previous/next menu item(s), if possible
-    else {
-      if (target === 'previous') {
-        tryToFocus(
-          menuItems.slice(0, menuItems.indexOf(activeElement)).toReversed(),
-        );
-      }
-      if (target === 'next') {
-        tryToFocus(
-          menuItems.slice(menuItems.indexOf(activeElement) + 1),
-        );
-      }
-    }
+  if (target === 'previous') {
+    tryToFocus(menuItems.slice(0, menuItems.indexOf(focusedEl!)).toReversed());
+    return;
   }
+
+  if (target === 'next') {
+    tryToFocus(menuItems.slice(menuItems.indexOf(focusedEl!) + 1));
+    return;
+  }
+
+  assertThatIsNeverReached(target);
 }
 
 /**
