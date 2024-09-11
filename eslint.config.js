@@ -35,6 +35,9 @@ export default antfu(
           requireLast: false,
         },
       }],
+
+      /* allow assignments in condition statements */
+      'no-cond-assign': 'off', // https://eslint.org/docs/latest/rules/no-cond-assign
     },
   },
 );

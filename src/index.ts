@@ -68,6 +68,20 @@ export function assertInstanceof(x: unknown, classes: Constructor | Constructor[
 }
 
 /**
+ * find the currently focused element inside the dom tree that is given by some random `referenceElement` of that dom tree
+ */
+export function getFocusedElement(referenceElement: Element) {
+  const documentRoot = referenceElement.getRootNode();
+  if (
+    !(documentRoot instanceof Document) &&
+    !(documentRoot instanceof ShadowRoot)
+  ) {
+    throw new TypeError(`The given reference element is not inside a document tree`);
+  }
+  return documentRoot.activeElement ?? undefined;
+}
+
+/**
  * tries to focus the given elements until it finds the first that works
  */
 export function tryToFocus(elements: Element[]) {
@@ -76,8 +90,7 @@ export function tryToFocus(elements: Element[]) {
     (el as HTMLElement).focus?.();
 
     // if focus was successful, we're done
-    const documentRoot = assertInstanceof(el.getRootNode(), [Document, ShadowRoot]);
-    if (el === documentRoot.activeElement) {
+    if (el === getFocusedElement(el)) {
       break;
     }
   }
@@ -125,4 +138,25 @@ export function focusMenuItem(containerEl: Element, target: 'first' | 'previous'
       }
     }
   }
+}
+
+/**
+ * returns the dom element that contains all the given elements, which can be one of the elements itself,
+ * elements must be in the same document tree
+ */
+export function findCommonParent(elements: Element[]) {
+  if (!elements.length) {
+    throw new Error(`Can't find common parent element of zero nodes`);
+  }
+
+  let parent = elements[0];
+
+  do {
+    if (elements.every((element) => parent.contains(element))) {
+      return parent;
+    }
+  }
+  while (isDefined(parent = parent.parentElement!));
+
+  throw new Error(`Nodes are not within the same document tree`);
 }
