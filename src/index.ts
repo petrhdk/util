@@ -68,17 +68,17 @@ export function assertInstanceof(x: unknown, classes: Constructor | Constructor[
 }
 
 /**
- * find the currently focused element inside the dom tree that is given by some random `referenceElement` of that dom tree
+ * find the currently focused element inside the page.
+ * automatically traverses into shadow doms
  */
-export function getFocusedElement(referenceElement: Element) {
-  const documentRoot = referenceElement.getRootNode();
-  if (
-    !(documentRoot instanceof Document) &&
-    !(documentRoot instanceof ShadowRoot)
-  ) {
-    throw new TypeError(`The given reference element is not inside a document tree`);
+export function focusedElement() {
+  let focusedEl: Element | undefined = window.document.activeElement ?? undefined;
+
+  while (isDefined(focusedEl?.shadowRoot?.activeElement)) {
+    focusedEl = focusedEl.shadowRoot.activeElement;
   }
-  return documentRoot.activeElement ?? undefined;
+
+  return focusedEl;
 }
 
 /**
@@ -90,7 +90,7 @@ export function tryToFocus(elements: Element[]) {
     (el as HTMLElement).focus?.();
 
     // if focus was successful, we're done
-    if (el === getFocusedElement(el)) {
+    if (el === focusedElement()) {
       break;
     }
   }
@@ -104,7 +104,7 @@ export function focusMenuItem(menuItems: Element[], target: 'first' | 'previous'
     return;
   }
 
-  const focusedEl = getFocusedElement(menuItems[0]);
+  const focusedEl = focusedElement();
 
   if (target === 'previous' || target === 'next') {
     if (isNotDefined(focusedEl) || !menuItems.includes(focusedEl)) {
