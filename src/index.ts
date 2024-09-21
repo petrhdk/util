@@ -62,7 +62,7 @@ export function assertInstanceof(x: unknown, classes: Constructor | Constructor[
     classes = [classes];
   }
   if (!classes.some((clas) => x instanceof clas)) {
-    throw new TypeError(`Value is instance of neither ${classes.map((clas) => `'${clas.name}'`).join(' nor ')}`);
+    throw new TypeError(`Value is not instance of ${classes.map((clas) => `'${clas.name}'`).join(' or ')}`);
   }
   return x;
 }
