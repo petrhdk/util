@@ -91,9 +91,11 @@ export function tryToFocus(elements: Element[]) {
 
     // if focus was successful, we're done
     if (el === focusedElement()) {
-      break;
+      return true;
     }
   }
+
+  return false;
 }
 
 /**
@@ -101,7 +103,7 @@ export function tryToFocus(elements: Element[]) {
  */
 export function focusMenuItem(menuItems: Element[], target: 'first' | 'previous' | 'next') {
   if (menuItems.length === 0) {
-    return;
+    return false;
   }
 
   const focusedEl = focusedElement();
@@ -113,21 +115,19 @@ export function focusMenuItem(menuItems: Element[], target: 'first' | 'previous'
   }
 
   if (target === 'first') {
-    tryToFocus(menuItems);
-    return;
+    return tryToFocus(menuItems);
   }
 
   if (target === 'previous') {
-    tryToFocus(menuItems.slice(0, menuItems.indexOf(focusedEl!)).toReversed());
-    return;
+    return tryToFocus(menuItems.slice(0, menuItems.indexOf(focusedEl!)).toReversed());
   }
 
   if (target === 'next') {
-    tryToFocus(menuItems.slice(menuItems.indexOf(focusedEl!) + 1));
-    return;
+    return tryToFocus(menuItems.slice(menuItems.indexOf(focusedEl!) + 1));
   }
 
   assertThatIsNeverReached(target);
+  return false;
 }
 
 /**
