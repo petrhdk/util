@@ -1,7 +1,7 @@
 /**
  * returns `true` if value is anything but `undefined` or `null`
  */
-export function isDefined<T>(value: T): value is Exclude<T, null | undefined> {
+export function isDefined<T>(value: T): value is Exclude<T, null | undefined | void> {
   return value !== undefined && value !== null;
 }
 
