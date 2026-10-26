@@ -157,3 +157,16 @@ export function findCommonParent(elements: Element[]) {
 export function range(n: number) {
   return Array.from({ length: n }).map((_, i) => i);
 }
+
+/**
+ * Determines whether or not two arrays have identical contents.
+ */
+export function arrayEquals(array1: unknown[], array2: unknown[]) {
+  if (array1 === array2) {
+    return true;
+  }
+  if (array1.length !== array2.length) {
+    return false;
+  }
+  return !array1.some((item, i) => item !== array2[i]);
+}
