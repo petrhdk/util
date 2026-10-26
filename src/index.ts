@@ -150,3 +150,10 @@ export function findCommonParent(elements: Element[]) {
 
   throw new Error(`Nodes are not within the same document tree`);
 }
+
+/**
+ * Creates an array of integers from `0` (inclusive) to `n` (exclusive).
+ */
+export function range(n: number) {
+  return Array.from({ length: n }).map((_, i) => i);
+}
