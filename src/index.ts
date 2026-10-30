@@ -170,3 +170,14 @@ export function arrayEquals(array1: unknown[], array2: unknown[]) {
   }
   return !array1.some((item, i) => item !== array2[i]);
 }
+
+/**
+ * Returns the unix timestamp (seconds) for the given date, or for the current
+ * date if not date is given.
+ */
+export function unixTimestamp(date?: Date) {
+  if (date) {
+    return Math.floor(date.getTime() / 1000);
+  }
+  return Math.floor(Date.now() / 1000);
+}
